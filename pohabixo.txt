@@ -1,0 +1,29 @@
+DICIONARIOS --- Voos e Passageiros
+
+
+Voos
+ | 
+Chave->numero do voo
+primeiro valor->cidade origem
+segundo valor->cidade destino
+terceiro valor->preço passagem
+quarto valor->quantidade lugares disponiveis
+quinto valor->numeros escala
+
+
+
+passageiros
+    |
+Chave->CPF
+primeiro valor->nome
+segundo->telefone
+
+
+
+LISTAS --- voos_disponiveis e passageiros_voo
+
+
+
+
+
+ 
