@@ -4,7 +4,7 @@ aVoos_disp = []
 
 def cadastro_voo():
     while True:
-        chave_voo = str(input("Insira o numero do Voo: "))
+        chave_voo = int(input("Insira o numero do Voo: "))
 
         if chave_voo not in dVoos.keys():
             cidade_origem = str(input("Insira a cidade de origem: "))
@@ -32,24 +32,25 @@ def cadastro_voo():
             print(f"A chave >{chave_voo}< não pode ser inserida pois já existe uma cadastrado")
 
 def cadastro_passageiros():
-    cpf_chave = int(input("Insira o CPF para cadastro: "))
-    if cpf_chave not in dPassageiros.keys():
-        nome_passageiro = str(input("Insira o nome do passageiro: "))
-        num_telefone = int(input("Digite o numero de telefone: "))
+    while True:
+        cpf_chave = int(input("Insira o CPF para cadastro: "))
+        if cpf_chave not in dPassageiros.keys():
+            nome_passageiro = str(input("Insira o nome do passageiro: "))
+            num_telefone = int(input("Digite o numero de telefone: "))
 
-        dPassageiros[cpf_chave] = {
-        "Nome": nome_passageiro,
-        "Telefone": num_telefone,
-        "Voos comprados": []
-        }
+            dPassageiros[cpf_chave] = {
+            "Nome": nome_passageiro,
+            "Telefone": num_telefone,
+            "Voos comprados": []
+            }
 
-        continuar = str(input("\nDeseja continuar (S/N): ")).upper()
-        if continuar == "S":
-            cadastro_passageiros()
+            continuar = str(input("\nDeseja continuar (S/N): ")).upper()
+            if continuar != "S":
+                break
                 
-    else:
-        print(f"O CPF >{cpf_chave}< não pode ser inserido pois já existe um cadastrado")
-        cadastro_passageiros()
+        else:
+            print(f"O CPF >{cpf_chave}< não pode ser inserido pois já existe um cadastrado")
+            cadastro_passageiros()
 
     return dPassageiros
 
@@ -59,7 +60,7 @@ def consult_voo():
         consulta = int(input(" "))
         match consulta:
             case 1:
-                pesquisa = str(input("Insira a chave do Voo que você deseja consultar: "))
+                pesquisa = int(input("Insira a chave do Voo que você deseja consultar: "))
                 if pesquisa in dVoos:
                     print(f"\nVoo {pesquisa} encontrado:")
                     for chave, valor in dVoos[pesquisa].items():
@@ -80,7 +81,8 @@ def consult_voo():
                         print(f"\n\tVoo {chave}:")
                         validacao = True
                         for key, value in origem.items():
-                            print(f"{key.capitalize()}: {value.capitalize() if isinstance(value, str) else value}")
+                            print(f"{key.capitalize()}: {len(value) if key == 'passageiros' else (value.capitalize() if isinstance(value, str) else value)}")
+                                
                 if not validacao:
                     print(f"Nenhum voo encontrado com origem em {pesquisa_origem}.")
 
@@ -97,7 +99,8 @@ def consult_voo():
                         print(f"\n\tVoo {chave}")
                         validacao = True
                         for key, value in destino.items():
-                            print(f"{key.capitalize()}: {value.capitalize() if isinstance(value, str) else value}")
+                            print(f"{key.capitalize()}: {len(value) if key == 'passageiros' else (value.capitalize() if isinstance(value, str) else value)}")
+                
                 if not validacao:
                     print(f"Nenhum voo encontrado com destino em {pesquisa_destino}.")
 
