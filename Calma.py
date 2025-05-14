@@ -39,10 +39,29 @@ def cadastro_passageiros():
             num_telefone = int(input("Digite o numero de telefone: "))
 
             dPassageiros[cpf_chave] = {
-            "Nome": nome_passageiro,
-            "Telefone": num_telefone,
-            "Voos comprados": []
+            "nome": nome_passageiro,
+            "telefone": num_telefone,
+            "voos comprados": []
             }
+
+            qnt_passagens_comp = int(input("Insira a quantidade de passagens diferentes que o cliente comprou: "))
+            qnt_compras = 1
+            while qnt_compras <= qnt_passagens_comp:
+                chave_voo = int(input("Insira o numero do Voo comprado: "))
+                print(qnt_passagens_comp)
+
+                if chave_voo in dVoos:
+                    dPassageiros[cpf_chave]["voos comprados"].append(chave_voo)
+                    dVoos[chave_voo]["passageiros"].append(cpf_chave)
+                    if dVoos[chave_voo]["lugares"] > 0:
+                        dVoos[chave_voo]["lugares"] -= 1
+                    else:
+                        print("Este Voo ja teve todos os lugares vendidos")
+                        qnt_compras -= 1
+                    
+                    qnt_compras += 1
+                else:
+                    print("Chave do Voo não encontrada")
 
             continuar = str(input("\nDeseja continuar (S/N): ")).upper()
             if continuar != "S":
@@ -50,9 +69,6 @@ def cadastro_passageiros():
                 
         else:
             print(f"O CPF >{cpf_chave}< não pode ser inserido pois já existe um cadastrado")
-            cadastro_passageiros()
-
-    return dPassageiros
 
 def consult_voo():
     while True:
@@ -64,20 +80,20 @@ def consult_voo():
                 if pesquisa in dVoos:
                     print(f"\nVoo {pesquisa} encontrado:")
                     for chave, valor in dVoos[pesquisa].items():
-                        print(f"{chave.capitalize()}: {valor.capitalize() if isinstance(valor, str) else valor}")
+                        print(f"{chave.capitalize()}: {len(valor) if key == 'passageiros' else (valor.capitalize() if isinstance(valor, str) else valor)}")
                 else:
                     print("Voo não encontrado!")
 
-                retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper()
+                retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
 
-                if retornar != "S":
+                if retornar != "S".strip():
                     break
 
             case 2:
                 pesquisa_origem = str(input("Insira a cidade de origem que você deseja consultar: "))
                 validacao = False
                 for chave, origem in dVoos.items():
-                    if origem["origem"].upper() == pesquisa_origem.upper():
+                    if origem["origem"].upper().strip() == pesquisa_origem.upper().strip():
                         print(f"\n\tVoo {chave}:")
                         validacao = True
                         for key, value in origem.items():
@@ -86,16 +102,16 @@ def consult_voo():
                 if not validacao:
                     print(f"Nenhum voo encontrado com origem em {pesquisa_origem}.")
 
-                retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper()
+                retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
 
-                if retornar != "S":
+                if retornar != "S".strip():
                     break
 
             case 3:
                 pesquisa_destino = str(input("Insira a cidade de destino que você deseja consultar: "))
                 validacao = False
                 for chave, destino in dVoos.items():
-                    if destino["destino"].upper() == pesquisa_destino.upper():
+                    if destino["destino"].upper().strip() == pesquisa_destino.upper().strip():
                         print(f"\n\tVoo {chave}")
                         validacao = True
                         for key, value in destino.items():
@@ -104,14 +120,14 @@ def consult_voo():
                 if not validacao:
                     print(f"Nenhum voo encontrado com destino em {pesquisa_destino}.")
 
-                retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper()
+                retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
 
-                if retornar != "S":
+                if retornar != "S".strip():
                     break
                     
             case _:
                 print("Por favor escolha uma opção valida")
 
 cadastro_voo()
-#cadastro_passageiros()
+cadastro_passageiros()
 consult_voo()
