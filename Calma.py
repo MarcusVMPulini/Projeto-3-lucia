@@ -12,6 +12,8 @@ def cadastro_voo():
             num_escalas = int(input("Insira o numero de escalas (paradas até o destino final): "))
             val_passagem = float(input("Insira o preço da passagem: "))
             qnt_lugares = int(input("Insira a quantidade de lugares disponiveis no voo: "))
+            while qnt_lugares <= 0:
+                qnt_lugares = int(input("A quantidade de lugares não pode ser igual ou menor que 0 adicione um valor valido: "))
 
             aVoos_disp.append(chave_voo)
 
@@ -46,20 +48,19 @@ def cadastro_passageiros():
 
             qnt_passagens_comp = int(input("Insira a quantidade de passagens diferentes que o cliente comprou: "))
             qnt_compras = 1
+
             while qnt_compras <= qnt_passagens_comp:
                 chave_voo = int(input("Insira o numero do Voo comprado: "))
-                print(qnt_passagens_comp)
 
                 if chave_voo in dVoos:
-                    dPassageiros[cpf_chave]["voos comprados"].append(chave_voo)
-                    dVoos[chave_voo]["passageiros"].append(cpf_chave)
                     if dVoos[chave_voo]["lugares"] > 0:
+                        dPassageiros[cpf_chave]["voos comprados"].append(chave_voo)
+                        dVoos[chave_voo]["passageiros"].append(cpf_chave)
                         dVoos[chave_voo]["lugares"] -= 1
+                        qnt_compras += 1
                     else:
                         print("Este Voo ja teve todos os lugares vendidos")
-                        qnt_compras -= 1
-                    
-                    qnt_compras += 1
+
                 else:
                     print("Chave do Voo não encontrada")
 
@@ -128,6 +129,35 @@ def consult_voo():
             case _:
                 print("Por favor escolha uma opção valida")
 
+def consult_menor_escala():
+    pesquisa_origem_escala = str(input("Insira o nome da cidade de origem: "))
+    pesquisa_destino_escala = str(input("Insira o nome da cidade de destino: "))
+    validacao = False
+    menor = None
+
+    voos_menores_escalas = []
+
+    for chave, valor in dVoos.items():
+        if valor["origem"].upper().strip() == pesquisa_origem_escala.upper().strip() and valor["destino"].upper().strip() == pesquisa_destino_escala.upper().strip():
+            if menor == None or valor["escalas"] < menor:
+                menor = valor["escalas"]
+                voos_menores_escalas = [valor]
+                validacao = True
+            else:
+                if valor["escalas"] == menor:
+                    voos_menores_escalas.append(valor)
+                    validacao = True
+            
+    if validacao:
+        print(f"Os(s) voo(s) com menor numero de escalas de {pesquisa_origem_escala.title()} até {pesquisa_destino_escala.title()}")
+        for num, voo in (voos_menores_escalas):
+            print(f"\nVoo {num + 1}")
+            for key, value in voo.items():
+                print(f"{key.capitalize()}: {len(value) if key == 'passageiros' else (value.capitalize() if isinstance(value, str) else value)}")
+    else:
+        print("Não existe Voo com este percurso.")
+
 cadastro_voo()
 cadastro_passageiros()
 consult_voo()
+
