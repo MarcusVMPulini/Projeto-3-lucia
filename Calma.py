@@ -130,34 +130,43 @@ def consult_voo():
                 print("Por favor escolha uma opção valida")
 
 def consult_menor_escala():
-    pesquisa_origem_escala = str(input("Insira o nome da cidade de origem: "))
-    pesquisa_destino_escala = str(input("Insira o nome da cidade de destino: "))
-    validacao = False
-    menor = None
+    while True:
+        pesquisa_origem_escala = str(input("Insira o nome da cidade de origem: "))
+        pesquisa_destino_escala = str(input("Insira o nome da cidade de destino: "))
+        validacao = False
+        menor = None
 
-    voos_menores_escalas = []
+        voos_menores_escalas = []
 
-    for chave, valor in dVoos.items():
-        if valor["origem"].upper().strip() == pesquisa_origem_escala.upper().strip() and valor["destino"].upper().strip() == pesquisa_destino_escala.upper().strip():
-            if menor == None or valor["escalas"] < menor:
-                menor = valor["escalas"]
-                voos_menores_escalas = [valor]
-                validacao = True
-            else:
-                if valor["escalas"] == menor:
-                    voos_menores_escalas.append(valor)
+        for chave, valor in dVoos.items():
+            if valor["origem"].upper().strip() == pesquisa_origem_escala.upper().strip() and valor["destino"].upper().strip() == pesquisa_destino_escala.upper().strip():
+                if menor == None or valor["escalas"] < menor:
+                    menor = valor["escalas"]
+                    voos_menores_escalas = [valor]
                     validacao = True
-            
-    if validacao:
-        print(f"Os(s) voo(s) com menor numero de escalas de {pesquisa_origem_escala.title()} até {pesquisa_destino_escala.title()}")
-        for num, voo in (voos_menores_escalas):
-            print(f"\nVoo {num + 1}")
-            for key, value in voo.items():
-                print(f"{key.capitalize()}: {len(value) if key == 'passageiros' else (value.capitalize() if isinstance(value, str) else value)}")
-    else:
-        print("Não existe Voo com este percurso.")
+                else:
+                    if valor["escalas"] == menor:
+                        voos_menores_escalas.append(valor)
+                
+        if validacao:
+            print(f"Os(s) voo(s) com menor numero de escalas de {pesquisa_origem_escala.title()} até {pesquisa_destino_escala.title()}")
+            for num, voo in enumerate(voos_menores_escalas, start = 1):
+                print(f"\nVoo {num}")
+                for key, value in voo.items():
+                    print(f"{key.capitalize()}: {len(value) if key == 'passageiros' else (value.capitalize() if isinstance(value, str) else value)}")
+                
+            retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
+
+            if retornar != "S".strip():
+                break
+        else:
+            print("Não existe Voo com este percurso.")
+            retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
+
+            if retornar != "S".strip():
+                    break
 
 cadastro_voo()
-cadastro_passageiros()
-consult_voo()
-
+#cadastro_passageiros()
+#consult_voo()
+consult_menor_escala()
