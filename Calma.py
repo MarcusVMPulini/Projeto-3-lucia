@@ -71,6 +71,9 @@ def cadastro_passageiros():
         else:
             print(f"O CPF >{cpf_chave}< não pode ser inserido pois já existe um cadastrado")
 
+    if dVoos[chave_voo]["lugares"] <= 0:
+        aVoos_disp.remove(chave_voo)
+
 def consult_voo():
     while True:
         print(f"[ 1 ]. Consultar Voo pela chave\n[ 2 ]. Consultar Voo pela cidade de origem\n[ 3 ]. Consultar Voo pela cidade de destino\n")
