@@ -51,18 +51,19 @@ def cadastro_passageiros():
 
             while qnt_compras <= qnt_passagens_comp:
                 chave_voo = int(input("Insira o numero do Voo comprado: "))
-
-                if chave_voo in dVoos:
-                    if dVoos[chave_voo]["lugares"] > 0:
-                        dPassageiros[cpf_chave]["voos comprados"].append(chave_voo)
-                        dVoos[chave_voo]["passageiros"].append(cpf_chave)
-                        dVoos[chave_voo]["lugares"] -= 1
-                        qnt_compras += 1
+                
+                if chave_voo in aVoos_disp:
+                    if chave_voo in dVoos:
+                        if dVoos[chave_voo]["lugares"] > 0:
+                            dPassageiros[cpf_chave]["voos comprados"].append(chave_voo)
+                            dVoos[chave_voo]["passageiros"].append(cpf_chave)
+                            dVoos[chave_voo]["lugares"] -= 1
+                            qnt_compras += 1
+                        else:
+                            print("Este Voo ja teve todos os lugares vendidos")
+        
                     else:
-                        print("Este Voo ja teve todos os lugares vendidos")
-
-                else:
-                    print("Chave do Voo não encontrada")
+                        print("Chave do Voo não encontrada")
 
             continuar = str(input("\nDeseja continuar (S/N): ")).upper()
             if continuar != "S":
