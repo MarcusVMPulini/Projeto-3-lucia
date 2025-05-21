@@ -201,7 +201,17 @@ def listar_passageiros():
             if voltar != "S":
                 break
                         
-
+def cancel_passageiro():
+    while True:
+        cpf_cancelar = int(input("Insira o CPF que você deseja cancelar: "))
+        if cpf_cancelar in dPassageiros.keys():
+            for voo in dPassageiros[cpf_cancelar]["voos comprados"]:
+                if cpf_cancelar in dPassageiros[voo]["passageiros"]:
+                    dVoos[voo]["luguares"] += 1
+                    del dPassageiros[cpf_cancelar]
+ 
+                if voo not in aVoos_disp:
+                    aVoos_disp.append(voo)
 
 
 cadastro_voo()
