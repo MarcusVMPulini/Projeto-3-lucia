@@ -170,7 +170,42 @@ def consult_menor_escala():
             if retornar != "S".strip():
                     break
 
+            
+def listar_passageiros():
+    while True:
+        num_voo = int(input("Digite o número do voo que deseja pesquisar: "))
+        for chave, valor in dVoos.items():
+            if chave in dVoos:
+
+                print(f"\n---Informações do Voo{num_voo}---")
+                print(f"Origem: {dVoos[chave]['origem']}")
+                print(f"Destino: {dVoos[chave]['destino']}")
+                print(f"Lugares Disponíveis: {dVoos[chave]['lugares']}")
+                print(f"Total de passageiros: {len(dVoos[chave]['passageiros'])}")
+                
+                if dVoos[chave]["passageiros"]:
+                    print("\n--- Passageiros ---")
+                    for cpf in dVoos[chave]["passageiros"]:
+                        if cpf in dPassageiros:
+                            print(f"Nome: {dPassageiros[cpf]['nome']}")
+                            print(f"CPF:{cpf}")
+                            print(f"Telefone: {dPassageiros[cpf]['telefone']}\n")
+                        else:
+                            print(f"CPF{cpf} não encontrado.")
+                else:
+                    print("Nenhum passageiro cadastrado neste voo.")
+            else:
+                print("Voo não encontrado")
+
+            voltar = input("\nDeseja consultar outro voo? (S/N): ").strip().upper()
+            if voltar != "S":
+                break
+                        
+
+
+
 cadastro_voo()
-#cadastro_passageiros()
+cadastro_passageiros()
 #consult_voo()
-consult_menor_escala()
+#consult_menor_escala()
+listar_passageiros()
