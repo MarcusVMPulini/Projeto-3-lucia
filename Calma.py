@@ -36,6 +36,7 @@ def cadastro_voo():
 def cadastro_passageiros():
     while True:
         cpf_chave = int(input("Insira o CPF para cadastro: "))
+        
         if cpf_chave not in dPassageiros.keys():
             nome_passageiro = str(input("Insira o nome do passageiro: "))
             num_telefone = int(input("Digite o numero de telefone: "))
@@ -50,7 +51,13 @@ def cadastro_passageiros():
             qnt_compras = 1
 
             while qnt_compras <= qnt_passagens_comp:
-                chave_voo = int(input("Insira o numero do Voo comprado: "))
+
+                for chaves in dVoos.keys():
+                    chave_voo = int(input("Insira o numero do Voo comprado: "))
+                    if chaves == chave_voo:
+                        break
+                    else:
+                        print("\n--Insira um Voo valido\n\n")
                 
                 if chave_voo in aVoos_disp:
                     if chave_voo in dVoos:
@@ -59,6 +66,7 @@ def cadastro_passageiros():
                             dVoos[chave_voo]["passageiros"].append(cpf_chave)
                             dVoos[chave_voo]["lugares"] -= 1
                             qnt_compras += 1
+                            print("Passageiro cadastrado com sucesso!")
                         else:
                             print("Este Voo ja teve todos os lugares vendidos")
         
@@ -142,7 +150,7 @@ def consult_menor_escala():
 
         voos_menores_escalas = []
 
-        for chave, valor in dVoos.items():
+        for valor in dVoos.values():
             if valor["origem"].upper().strip() == pesquisa_origem_escala.upper().strip() and valor["destino"].upper().strip() == pesquisa_destino_escala.upper().strip():
                 if menor == None or valor["escalas"] < menor:
                     menor = valor["escalas"]
@@ -174,7 +182,7 @@ def consult_menor_escala():
 def listar_passageiros():
     while True:
         num_voo = int(input("Digite o número do voo que deseja pesquisar: "))
-        for chave, valor in dVoos.items():
+        for chave in dVoos.keys():
             if chave in dVoos:
 
                 print(f"\n---Informações do Voo{num_voo}---")
@@ -204,18 +212,46 @@ def listar_passageiros():
 def cancel_passageiro():
     while True:
         cpf_cancelar = int(input("Insira o CPF que você deseja cancelar: "))
+
         if cpf_cancelar in dPassageiros.keys():
-            for voo in dPassageiros[cpf_cancelar]["voos comprados"]:
-                if cpf_cancelar in dPassageiros[voo]["passageiros"]:
-                    dVoos[voo]["luguares"] += 1
-                    del dPassageiros[cpf_cancelar]
- 
-                if voo not in aVoos_disp:
-                    aVoos_disp.append(voo)
+            for i, voo in enumerate(dPassageiros[cpf_cancelar]["voos comprados"], start = 1):
+                if cpf_cancelar in dVoos[voo]["passageiros"]:
+                    print(f"--{i}º Voo do {dPassageiros[cpf_cancelar]['nome']} com CPF {cpf_cancelar}\n")
+                    print(f"""Voo: {voo}
+Origem: {dVoos[voo]['origem']}
+Destino: {dVoos[voo]['destino']}
+Escalas: {dVoos[voo]['escalas']}
+Preço: {dVoos[voo]['preco']}
+Lugares: {dVoos[voo]['lugares']}
+""")
+
+            valor_cancel = int(input("Insira o valor de qual cadastro deseja cancelar: "))
+            
+            if 1 <= valor_cancel <= dPassageiros[cpf_cancelar]["valor comprados"]:
+                dPassageiros[cpf_cancelar]["voos comprados"].pop(valor_cancel - 1)
+
+                if cpf_cancelar in dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["passageiros"]:
+                    dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["passageiros"].remove(cpf_cancelar)
+                    dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["passageiros"] += 1
+
+                    print(f"{cpf_cancelar} excluido com sucesso!")
+
+                    if dVoos[dPassageiros[cpf_cancelar]["voos comprados"]] not in aVoos_disp:
+                        aVoos_disp.append(dVoos[dPassageiros[cpf_cancelar]["voos comprados"]])
+
+                else:
+                    print(f"CPF não encontrado")
+
+            else:
+                print("--Opcão invalida")
+
+        else:
+            print("\n--CPF não encontrado\n")
 
 
 cadastro_voo()
 cadastro_passageiros()
 #consult_voo()
 #consult_menor_escala()
-listar_passageiros()
+#listar_passageiros()
+cancel_passageiro()
