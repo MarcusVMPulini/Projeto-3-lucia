@@ -232,7 +232,7 @@ Lugares: {dVoos[voo]['lugares']}
 
                 if cpf_cancelar in dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["passageiros"]:
                     dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["passageiros"].remove(cpf_cancelar)
-                    dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["passageiros"] += 1
+                    dVoos[dPassageiros[cpf_cancelar]["voos comprados"]]["lugares"] += 1
 
                     print(f"{cpf_cancelar} excluido com sucesso!")
 
@@ -247,6 +247,11 @@ Lugares: {dVoos[voo]['lugares']}
 
         else:
             print("\n--CPF não encontrado\n")
+
+    retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
+
+    if retornar != "S".strip():
+        break
 
 
 cadastro_voo()
