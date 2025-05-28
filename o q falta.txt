@@ -1,6 +1,0 @@
-Cadastro de voo -> "pronto"
-Consultar voo -> "pronto"
-Informar o Voo com menor Escala -> 
-Listar os Passageiros de um Voo ->
-Venda de passagem -> 
-Cancelamento de Passagem ->
