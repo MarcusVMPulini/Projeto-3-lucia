@@ -36,37 +36,35 @@ frame_conteudo.grid_columnconfigure(0, weight=1)
 fundo_label = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
 fundo_label.place(relx=0.5, rely=0.5, anchor="center")
 
-painel_visivel = False
-
-# Funções
-def tela_inicial():
+def preparar_tela_conteudo(mostrar_frame_consulta=True):
     for widget in frame_conteudo.winfo_children():
         widget.destroy()
-    frame_consulta.grid_remove()
-    fundo_label = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-    fundo_label.place(relx=0.5, rely=0.5, anchor="center")
-    global painel_visivel
-    painel_visivel = False
+
+    fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
+    fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
+
+    for widget in frame_consulta.winfo_children():
+        widget.destroy()
+
+    if mostrar_frame_consulta:
+        frame_consulta.grid()
+    else:
+        frame_consulta.grid_remove()
+
+def tela_inicial():
+    preparar_tela_conteudo(mostrar_frame_consulta=False)
 
 def tela_consultar_voo():
-    global painel_visivel
-    
-    for widget in frame_conteudo.winfo_children():
-        widget.destroy()
+    preparar_tela_conteudo(mostrar_frame_consulta=True)
 
     def mostrar_input(tipo):
-
-        for widget in frame_consulta.winfo_children():
-            widget.destroy()
-
-        fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-        fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
+        preparar_tela_conteudo(mostrar_frame_consulta=True)
 
         entry_label = ctk.CTkLabel(frame_consulta, text=f"Digite {tipo}:")
-        entry_label.grid(row=0, column=0, padx=20, pady=(20, 0), sticky='ns')
+        entry_label.grid(row=0, column=0, padx=20, pady=(20, 0))
 
         entry = ctk.CTkEntry(frame_consulta)
-        entry.grid(row=1, column=0, padx=20, pady=(10, 0), sticky='ns')
+        entry.grid(row=1, column=0, padx=20, pady=(10, 0))
 
         botoes_frame = ctk.CTkFrame(frame_consulta, fg_color="transparent")
         botoes_frame.grid(row=2, column=0, pady=(10, 0))
@@ -78,16 +76,10 @@ def tela_consultar_voo():
         botao_voltar.pack(side="left", padx=10)
 
     def voltar_para_botoes():
-        for widget in frame_consulta.winfo_children():
-            widget.destroy()
-
-        fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-        fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
+        preparar_tela_conteudo(mostrar_frame_consulta=True)
         montar_botoes_consulta()
 
     def montar_botoes_consulta():
-        fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-        fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
         botoes = [
             ("Consultar pela Chave", "a chave do voo"),
             ("Consultar Cidade Origem", "a cidade de origem"),
@@ -95,55 +87,30 @@ def tela_consultar_voo():
             ("Consultar Menor Escala", "menor escala")
         ]
         for i, (texto, tipo) in enumerate(botoes):
-            btn = ctk.CTkButton(frame_consulta, text=texto, command=lambda t=tipo: mostrar_input(t))
-            btn.grid(row=i, column=0, padx=20, pady=(20 if i else 380, 0), sticky='ns')
+            btn = ctk.CTkButton(
+                frame_consulta,
+                text=texto,
+                command=lambda t=tipo: mostrar_input(t)
+            )
+            btn.grid(row=i, column=0, padx=20, pady=(20 if i == 0 else 10, 0), sticky='ew')
 
-    for widget in frame_conteudo.winfo_children():
-        widget.destroy()
 
-    if painel_visivel:
-        frame_consulta.grid_remove()
-        painel_visivel = False
-    else:
-        frame_consulta.grid()
-        painel_visivel = True
-        montar_botoes_consulta()
+    montar_botoes_consulta()
 
 def tela_passageiros():
-    for widget in frame_conteudo.winfo_children():
-        widget.destroy()
-    global painel_visivel
+    preparar_tela_conteudo(mostrar_frame_consulta=True)
 
-    fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-    fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
-    
-    if painel_visivel:
-        frame_consulta.grid_remove()
-        painel_visivel = False
-    else:
-        frame_consulta.grid()
-        painel_visivel = True
-        for widget in frame_consulta.winfo_children():
-            widget.destroy()
+    label = ctk.CTkLabel(frame_consulta, text="Digite o número do voo:")
+    label.grid(row=0, column=0, padx=20, pady=(20, 0))
 
-        label = ctk.CTkLabel(frame_consulta, text="Digite o número do voo:")
-        label.grid(row=0, column=0, padx=20, pady=(20, 0))
+    entry = ctk.CTkEntry(frame_consulta)
+    entry.grid(row=1, column=0, padx=20, pady=(10, 0))
 
-        entry = ctk.CTkEntry(frame_consulta)
-        entry.grid(row=1, column=0, padx=20, pady=(10, 0))
-
-        botao_enviar = ctk.CTkButton(frame_consulta, text="Enviar")
-        botao_enviar.grid(row=2, column=0, padx=20, pady=(10, 0))
+    botao_enviar = ctk.CTkButton(frame_consulta, text="Enviar")
+    botao_enviar.grid(row=2, column=0, padx=20, pady=(10, 0))
 
 def tela_venda_voo():
-    for widget in frame_conteudo.winfo_children():
-        widget.destroy()
-    frame_consulta.grid_remove()
-    global painel_visivel
-    painel_visivel = False
-
-    fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-    fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
+    preparar_tela_conteudo(mostrar_frame_consulta=False)
 
     form_venda = ctk.CTkFrame(frame_conteudo, fg_color="transparent")
     form_venda.grid(row=0, column=0)
@@ -163,40 +130,19 @@ def tela_venda_voo():
     botao_enviar.grid(row=len(campos_venda), column=0, pady=(20, 0))
 
 def tela_cancelamento():
-    for widget in frame_conteudo.winfo_children():
-        widget.destroy()
-    global painel_visivel
+    preparar_tela_conteudo(mostrar_frame_consulta=True)
 
-    fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-    fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
-    
-    if painel_visivel:
-        frame_consulta.grid_remove()
-        painel_visivel = False
-    else:
-        frame_consulta.grid()
-        painel_visivel = True
-        for widget in frame_consulta.winfo_children():
-            widget.destroy()
+    label = ctk.CTkLabel(frame_consulta, text="Digite o número do voo para cancelar:")
+    label.grid(row=0, column=0, padx=20, pady=(20, 0))
 
-        label = ctk.CTkLabel(frame_consulta, text="Digite o número do voo para cancelar:")
-        label.grid(row=0, column=0, padx=20, pady=(20, 0))
+    entry = ctk.CTkEntry(frame_consulta)
+    entry.grid(row=1, column=0, padx=20, pady=(10, 0))
 
-        entry = ctk.CTkEntry(frame_consulta)
-        entry.grid(row=1, column=0, padx=20, pady=(10, 0))
-
-        botao_enviar = ctk.CTkButton(frame_consulta, text="Enviar")
-        botao_enviar.grid(row=2, column=0, padx=20, pady=(10, 0))
+    botao_enviar = ctk.CTkButton(frame_consulta, text="Enviar")
+    botao_enviar.grid(row=2, column=0, padx=20, pady=(10, 0))
 
 def tela_cadastrar_voo():
-    for widget in frame_conteudo.winfo_children():
-        widget.destroy()
-    frame_consulta.grid_remove()
-    global painel_visivel
-    painel_visivel = False
-
-    fundo_logo = ctk.CTkLabel(frame_conteudo, image=imagem_fundo, text="")
-    fundo_logo.place(relx=0.5, rely=0.5, anchor="center")
+    preparar_tela_conteudo(mostrar_frame_consulta=False)
 
     form_frame = ctk.CTkFrame(frame_conteudo, fg_color="transparent")
     form_frame.grid(row=0, column=0)
