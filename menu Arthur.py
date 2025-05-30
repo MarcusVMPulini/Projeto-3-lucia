@@ -11,7 +11,7 @@ app.iconbitmap("calma_airlines_logo.ico")
 # Imagens
 imagem_casinha = ctk.CTkImage(light_image=Image.open("passaro.png"), size=(80, 80))
 img = Image.open("Calma_aviao.png").convert("RGBA")
-img.putalpha(img.getchannel("A").point(lambda p: p * 0.1))
+img.putalpha(img.getchannel("A").point(lambda p: p * 0.05))
 imagem_fundo = ctk.CTkImage(img, size=(1400, 900))
 
 # Layout
@@ -60,13 +60,16 @@ def tela_consultar_voo():
     def mostrar_input(tipo):
         preparar_tela_conteudo(mostrar_frame_consulta=True)
 
-        entry_label = ctk.CTkLabel(frame_consulta, text=f"Digite {tipo}:")
+        container = ctk.CTkFrame(frame_consulta, fg_color="transparent")
+        container.place(relx=0.5, rely=0.5, anchor="center")
+
+        entry_label = ctk.CTkLabel(container, text=f"Digite {tipo}:")
         entry_label.grid(row=0, column=0, padx=20, pady=(20, 0))
 
-        entry = ctk.CTkEntry(frame_consulta)
+        entry = ctk.CTkEntry(container)
         entry.grid(row=1, column=0, padx=20, pady=(10, 0))
 
-        botoes_frame = ctk.CTkFrame(frame_consulta, fg_color="transparent")
+        botoes_frame = ctk.CTkFrame(container, fg_color="transparent")
         botoes_frame.grid(row=2, column=0, pady=(10, 0))
 
         botao_enviar = ctk.CTkButton(botoes_frame, text="Enviar", width=80)
@@ -80,34 +83,42 @@ def tela_consultar_voo():
         montar_botoes_consulta()
 
     def montar_botoes_consulta():
+        frame_botoes = ctk.CTkFrame(master=frame_consulta, fg_color="transparent")
+        frame_botoes.place(relx=0.5, rely=0.5, anchor="center")
+
         botoes = [
             ("Consultar pela Chave", "a chave do voo"),
             ("Consultar Cidade Origem", "a cidade de origem"),
             ("Consultar Cidade Destino", "a cidade de destino"),
             ("Consultar Menor Escala", "menor escala")
         ]
+
         for i, (texto, tipo) in enumerate(botoes):
             btn = ctk.CTkButton(
-                frame_consulta,
+                master=frame_botoes,
                 text=texto,
-                command=lambda t=tipo: mostrar_input(t)
+                command=lambda t=tipo: mostrar_input(t),
+                width=100
             )
-            btn.grid(row=i, column=0, padx=20, pady=(20 if i == 0 else 10, 0), sticky='ew')
-
+            btn.grid(row=i, column=0, padx=30, pady=(20 if i == 0 else 10, 0), sticky='ew')
 
     montar_botoes_consulta()
 
 def tela_passageiros():
     preparar_tela_conteudo(mostrar_frame_consulta=True)
 
-    label = ctk.CTkLabel(frame_consulta, text="Digite o número do voo:")
+    container = ctk.CTkFrame(frame_consulta, fg_color="transparent")
+    container.place(relx=0.5, rely=0.5, anchor="center")
+
+    label = ctk.CTkLabel(container, text="Digite o número do voo:")
     label.grid(row=0, column=0, padx=20, pady=(20, 0))
 
-    entry = ctk.CTkEntry(frame_consulta)
+    entry = ctk.CTkEntry(container)
     entry.grid(row=1, column=0, padx=20, pady=(10, 0))
 
-    botao_enviar = ctk.CTkButton(frame_consulta, text="Enviar")
+    botao_enviar = ctk.CTkButton(container, text="Enviar")
     botao_enviar.grid(row=2, column=0, padx=20, pady=(10, 0))
+
 
 def tela_venda_voo():
     preparar_tela_conteudo(mostrar_frame_consulta=False)
@@ -132,14 +143,18 @@ def tela_venda_voo():
 def tela_cancelamento():
     preparar_tela_conteudo(mostrar_frame_consulta=True)
 
-    label = ctk.CTkLabel(frame_consulta, text="Digite o número do voo para cancelar:")
+    container = ctk.CTkFrame(frame_consulta, fg_color="transparent")
+    container.place(relx=0.5, rely=0.5, anchor="center")
+
+    label = ctk.CTkLabel(container, text="Digite o número do voo para\n cancelar:")
     label.grid(row=0, column=0, padx=20, pady=(20, 0))
 
-    entry = ctk.CTkEntry(frame_consulta)
+    entry = ctk.CTkEntry(container)
     entry.grid(row=1, column=0, padx=20, pady=(10, 0))
 
-    botao_enviar = ctk.CTkButton(frame_consulta, text="Enviar")
+    botao_enviar = ctk.CTkButton(container, text="Enviar")
     botao_enviar.grid(row=2, column=0, padx=20, pady=(10, 0))
+
 
 def tela_cadastrar_voo():
     preparar_tela_conteudo(mostrar_frame_consulta=False)
