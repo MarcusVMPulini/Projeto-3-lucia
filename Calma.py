@@ -248,15 +248,15 @@ Lugares: {dVoos[voo]['lugares']}
         else:
             print("\n--CPF não encontrado\n")
 
-    retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
+        retornar = str(input("Deseja voltar ao menu de consultas?\n")).upper().strip()
 
-    if retornar != "S".strip():
-        break
+        if retornar != "S".strip():
+            break
 
 
-cadastro_voo()
-cadastro_passageiros()
+#cadastro_voo()
+#cadastro_passageiros()
 #consult_voo()
 #consult_menor_escala()
 #listar_passageiros()
-cancel_passageiro()
+#cancel_passageiro()
